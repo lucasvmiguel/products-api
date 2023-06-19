@@ -17,7 +17,7 @@ Note: _This API has been configured for `development` environment. To use in a `
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
 ```bash
-$ git clone git@github.com:lucasvmiguel/products-api.git
+git clone git@github.com:lucasvmiguel/products-api.git
 cd products-api
 npm install
 ```
@@ -27,13 +27,13 @@ npm install
 1. Open a terminal and run the following command to start the persistence (database) required:
 
 ```bash
-$ npm run persistence:up
+npm run persistence:up
 ```
 
 2. In another terminal, start the application with the following command:
 
 ```bash
-$ npm run dev
+npm run dev
 ```
 
 ## Testing
@@ -41,13 +41,13 @@ $ npm run dev
 ### Unit test
 
 ```bash
-$ npm run test:unit
+npm run test:unit
 ```
 
 ### Integration test
 
 ```bash
-$ npm run test:integration
+npm run test:integration
 ```
 
 ### Stress test
@@ -59,19 +59,19 @@ $ npm run test:integration
 1. Open a terminal and run the following command to start the persistence (database) required:
 
 ```bash
-$ npm run persistence:up
+npm run persistence:up
 ```
 
 2. In a new terminal, start the application with the following command:
 
 ```bash
-$ npm run build && npm start
+npm run build && npm start
 ```
 
 3. In another terminal, run the stress test with the following command
 
 ```bash
-$ npm run test:stress
+npm run test:stress
 ```
 
 ## Configuration

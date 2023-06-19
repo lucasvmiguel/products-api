@@ -20,4 +20,5 @@ model Product {
   deleted_at     DateTime?
 
   @@index([deleted_at])
+  @@map("products")
 }
