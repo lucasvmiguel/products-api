@@ -10,7 +10,7 @@
     "persistence:up": "docker-compose up",
     "persistence:down": "docker-compose down",
     "migrate:dev": "npx prisma migrate dev && prisma generate",
-    "test": "jest"
+    "test": "jest --runInBand"
   },
   "author": "",
   "license": "ISC",

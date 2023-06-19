@@ -3,7 +3,9 @@ import express from "express";
 
 import { PrismaClient } from "@prisma/client";
 
-import { internalServerError, notFound } from "./utils/middlewares";
+import { notFoundMiddleware } from "./utils/middlewares/not-found";
+import { internalServerErrorMiddleware } from "./utils/middlewares/internal-service-error";
+import { loggerMiddleware } from "./utils/middlewares/logger";
 
 // Repositories
 import { ProductRepository } from "./product/repository";
@@ -29,7 +31,7 @@ const productService = new ProductService(productRepository);
 // Initialize controllers
 const productController = new ProductController(productService);
 
-// Middlewares
+// Pre middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
@@ -42,10 +44,11 @@ router.get("/products/:id", (req, res) => productController.getById(req, res));
 router.put("/products/:id", (req, res) => productController.updateById(req, res));
 router.delete("/products/:id", (req, res) => productController.deleteById(req, res));
 
-app.use("/api/v1", router);
+// Post middlewares
+// router.use(notFoundMiddleware);
+app.use(internalServerErrorMiddleware);
+app.use(loggerMiddleware);
 
-// Handle errors
-app.use(notFound);
-app.use(internalServerError);
+app.use("/api/v1", router);
 
 export default app;

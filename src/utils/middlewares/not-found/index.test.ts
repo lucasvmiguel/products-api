@@ -1,14 +1,14 @@
 import request from "supertest";
-import express, { Request, Response, NextFunction } from "express";
+import express from "express";
 
-import { notFound } from "./not-found";
+import { notFoundMiddleware } from ".";
 
-describe("notFound", () => {
+describe("notFoundMiddleware", () => {
   let app: express.Application;
 
   beforeEach(() => {
     app = express();
-    app.use(notFound);
+    app.use(notFoundMiddleware);
   });
 
   it("should respond with a 404 status", async () => {

@@ -1,13 +1,17 @@
 import type { PrismaClient, Product, Prisma } from "@prisma/client";
-import { NotFoundError } from "../../utils/repository";
+import { NotFoundError, Repository } from "../../utils/repository";
 
-export class ProductRepository {
+// ProductRepository is the data access layer for products
+export class ProductRepository extends Repository {
   private prisma: PrismaClient;
 
   constructor(prisma: PrismaClient) {
+    super();
+
     this.prisma = prisma;
   }
 
+  // creates a new product
   async create(data: Prisma.ProductCreateInput): Promise<{ data: Product | null; error: Error | null }> {
     try {
       const product = await this.prisma.product.create({ data });
@@ -18,6 +22,7 @@ export class ProductRepository {
     }
   }
 
+  // returns all products
   async getAll(): Promise<{ data: Product[] | null; error: Error | null }> {
     try {
       const products = await this.prisma.product.findMany({ where: { deleted_at: null } });
@@ -28,6 +33,7 @@ export class ProductRepository {
     }
   }
 
+  // returns a product by id
   async getById(id: number): Promise<{ data: Product | null; error: Error | null }> {
     try {
       const product = await this.prisma.product.findFirst({ where: { id, deleted_at: null } });
@@ -41,6 +47,7 @@ export class ProductRepository {
     }
   }
 
+  // updates a product by id
   async updateById(id: number, data: Prisma.ProductUpdateInput): Promise<{ data: Product | null; error: Error | null }> {
     try {
       const product = await this.prisma.product.findFirst({ where: { id, deleted_at: null } });
@@ -56,6 +63,7 @@ export class ProductRepository {
     }
   }
 
+  // deletes a product by id
   async deleteById(id: number): Promise<{ data: Product | null; error: Error | null }> {
     try {
       const product = await this.prisma.product.findUnique({ where: { id } });

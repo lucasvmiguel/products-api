@@ -1,9 +1,9 @@
 import request from "supertest";
 import express, { Request, Response, NextFunction } from "express";
 
-import { internalServerError } from "./internal-server-error";
+import { internalServerErrorMiddleware } from ".";
 
-describe("internalServerError", () => {
+describe("internalServerErrorMiddleware", () => {
   let app: express.Application;
 
   beforeEach(() => {
@@ -12,7 +12,7 @@ describe("internalServerError", () => {
       throw new Error("Something broke!");
     });
 
-    app.use(internalServerError);
+    app.use(internalServerErrorMiddleware);
   });
 
   it("should respond with a 500 status", async () => {

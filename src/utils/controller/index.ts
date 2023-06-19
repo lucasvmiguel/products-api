@@ -4,9 +4,11 @@ import * as yup from "yup";
 
 import logger from "../../utils/logger";
 
+// StructuredResponse is the response type for all controllers
 export type StructuredResponse<T> = Response<{ message: string; data?: T; errors?: string[] }>;
 
-export class Controller {
+// Controller is the base class for all controllers
+export abstract class Controller {
   public logger: Logger;
 
   constructor() {
@@ -36,7 +38,7 @@ export class Controller {
     res.status(200).json({ message: "success", data });
   }
 
-  respondNoContentResponse<T>(res: StructuredResponse<T>, data: T) {
-    res.status(204).json({ message: "deleted", data });
+  respondNoContentResponse<T>(res: StructuredResponse<T>) {
+    res.status(204).send();
   }
 }

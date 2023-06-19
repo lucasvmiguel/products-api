@@ -8,8 +8,17 @@ import { NotFoundError } from "../../utils/repository";
 import { validate } from "../../utils/validation";
 import { Controller, StructuredResponse } from "../../utils/controller";
 
-type ProductResponseBody = Pick<Product, "id" | "name" | "code" | "stock_quantity" | "created_at" | "updated_at">;
+// ProductResponseBody is the response body for a product
+type ProductResponseBody = {
+  id: number;
+  name: string;
+  code: string;
+  stock_quantity: number;
+  created_at: Date;
+  updated_at: Date;
+};
 
+// ProductController is the controller layer for products
 export class ProductController extends Controller {
   private productService: ProductService;
 
@@ -131,10 +140,11 @@ export class ProductController extends Controller {
       return;
     }
 
-    this.respondNoContentResponse(res, this.mapProductToResponse(data));
+    this.respondNoContentResponse(res);
   }
 
-  mapProductToResponse(product: Product): ProductResponseBody {
+  // maps product to response
+  private mapProductToResponse(product: Product): ProductResponseBody {
     return {
       id: product.id,
       name: product.name,
