@@ -1,35 +1,14 @@
 import cors from "cors";
 import express from "express";
 
-import { PrismaClient } from "@prisma/client";
+import { notFoundMiddleware } from "./utils/middleware/not-found";
+import { internalServerErrorMiddleware } from "./utils/middleware/internal-service-error";
+import { loggerMiddleware } from "./utils/middleware/logger";
 
-import { notFoundMiddleware } from "./utils/middlewares/not-found";
-import { internalServerErrorMiddleware } from "./utils/middlewares/internal-service-error";
-import { loggerMiddleware } from "./utils/middlewares/logger";
-
-// Repositories
-import { ProductRepository } from "./product/repository";
-
-// Services
-import { ProductService } from "./product/service";
-
-// Controllers
-import { ProductController } from "./product/controller";
-
-// Initialize prisma
-const prisma = new PrismaClient();
+import controllers from "./controllers";
 
 // Initialize express
 const app = express();
-
-// Initialize repositories
-const productRepository = new ProductRepository(prisma);
-
-// Initialize services
-const productService = new ProductService(productRepository);
-
-// Initialize controllers
-const productController = new ProductController(productService);
 
 // Pre middlewares
 app.use(express.json());
@@ -38,16 +17,16 @@ app.use(cors());
 
 // Routes
 const router = express.Router();
-router.post("/products", (req, res) => productController.create(req, res));
-router.get("/products", (req, res) => productController.getAll(req, res));
-router.get("/products/:id", (req, res) => productController.getById(req, res));
-router.put("/products/:id", (req, res) => productController.updateById(req, res));
-router.delete("/products/:id", (req, res) => productController.deleteById(req, res));
+router.post("/products", (req, res) => controllers.ProductController.create(req, res));
+router.get("/products", (req, res) => controllers.ProductController.getAll(req, res));
+router.get("/products/:id", (req, res) => controllers.ProductController.getById(req, res));
+router.put("/products/:id", (req, res) => controllers.ProductController.updateById(req, res));
+router.delete("/products/:id", (req, res) => controllers.ProductController.deleteById(req, res));
 
 // Post middlewares
-// router.use(notFoundMiddleware);
-app.use(internalServerErrorMiddleware);
-app.use(loggerMiddleware);
+router.use(notFoundMiddleware);
+router.use(internalServerErrorMiddleware);
+router.use(loggerMiddleware);
 
 app.use("/api/v1", router);
 
