@@ -1,4 +1,4 @@
-# Stock API
+# Products API
 
 [![Go](https://github.com/lucasvmiguel/products-api/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/lucasvmiguel/products-api/actions/workflows/build-and-test.yml)
 
@@ -76,9 +76,10 @@ The following pictures shows some of the details of how the system is designed a
 
 - `/src`: Application source code
 - `/src/index.ts`: Application start file.
+- `/src/app.ts`: Where the API routes are defined.
 - `/src/utils`: Helper libraries to support the application.
 - `/src/product`: Product domain, where every code related to product should be placed. (Inspired by [DDD](https://en.wikipedia.org/wiki/Domain-driven_design))
-- `/src/test`: Integration tests that run with external apps. (eg: database)
+- `/test`: Integration tests that run with external apps. (eg: database)
 - `/.github`: CI/CD from Github.
 - `docker-compose.yml`: Used to spin up the persistence layer in development and testing.
 - `.env`: configures project.
