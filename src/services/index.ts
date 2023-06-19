@@ -1,7 +1,7 @@
-import { ProductService } from "./product/service";
+import { ProductService } from "@/services/product.service";
 
 // Dependencies
-import repositories from "./repositories";
+import repositories from "@/repositories";
 
 // Services
 export = {

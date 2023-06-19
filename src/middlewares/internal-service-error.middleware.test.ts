@@ -1,7 +1,7 @@
 import request from "supertest";
 import express, { Request, Response, NextFunction } from "express";
 
-import { internalServerErrorMiddleware } from ".";
+import { internalServerErrorMiddleware } from "./internal-service-error.middleware";
 
 describe("internalServerErrorMiddleware", () => {
   let app: express.Application;

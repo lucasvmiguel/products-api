@@ -2,8 +2,8 @@ import { v4 as uuidv4 } from "uuid";
 
 import type { Product } from "@prisma/client";
 
-import type { ProductRepository } from "../repository";
-import { Service } from "../../utils/service";
+import type { ProductRepository } from "@/repositories/product.repository";
+import { Service } from "@/services/base.service";
 
 // ProductService is the business logic layer for products
 export class ProductService extends Service {

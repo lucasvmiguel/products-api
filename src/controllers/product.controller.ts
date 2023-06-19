@@ -3,10 +3,10 @@ import * as yup from "yup";
 
 import type { Product } from "@prisma/client";
 
-import type { ProductService } from "../service";
-import { NotFoundError } from "../../utils/repository";
-import { validate } from "../../utils/validation";
-import { Controller, StructuredResponse } from "../../utils/controller";
+import type { ProductService } from "@/services/product.service";
+import { NotFoundError } from "@/repositories/base.repository";
+import { validate } from "@/utils/validation";
+import { Controller, StructuredResponse } from "@/controllers/base.controller";
 
 // ProductResponseBody is the response body for a product
 type ProductResponseBody = {

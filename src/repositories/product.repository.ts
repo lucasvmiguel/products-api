@@ -1,5 +1,6 @@
 import type { PrismaClient, Product, Prisma } from "@prisma/client";
-import { NotFoundError, Repository } from "../../utils/repository";
+
+import { NotFoundError, Repository } from "@/repositories/base.repository";
 
 // ProductRepository is the data access layer for products
 export class ProductRepository extends Repository {

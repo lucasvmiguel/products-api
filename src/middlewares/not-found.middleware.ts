@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import logger from "../../logger";
+import logger from "@/utils/logger";
 
 // Middleware that handles not found errors
 export function notFoundMiddleware(req: Request, res: Response, next: NextFunction) {

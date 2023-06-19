@@ -1,7 +1,7 @@
 import request from "supertest";
 import express, { Request, Response, NextFunction } from "express";
 
-import { loggerMiddleware } from ".";
+import { loggerMiddleware } from "./logger.middleware";
 
 describe("loggerMiddleware", () => {
   let app: express.Application;

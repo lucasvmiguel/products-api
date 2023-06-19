@@ -2,7 +2,7 @@ import type { Response } from "express";
 import type { Logger } from "winston";
 import * as yup from "yup";
 
-import logger from "../../utils/logger";
+import logger from "@/utils/logger";
 
 // StructuredResponse is the response type for all controllers
 export type StructuredResponse<T> = Response<{ message: string; data?: T; errors?: string[] }>;

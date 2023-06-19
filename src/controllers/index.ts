@@ -1,7 +1,7 @@
-import { ProductController } from "./product/controller";
+import { ProductController } from "@/controllers/product.controller";
 
 // Dependencies
-import services from "./services";
+import services from "@/services";
 
 // Controllers
 export = {

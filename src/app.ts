@@ -1,11 +1,10 @@
 import cors from "cors";
 import express from "express";
 
-import { notFoundMiddleware } from "./utils/middleware/not-found";
-import { internalServerErrorMiddleware } from "./utils/middleware/internal-service-error";
-import { loggerMiddleware } from "./utils/middleware/logger";
-
-import controllers from "./controllers";
+import { notFoundMiddleware } from "@/middlewares/not-found.middleware";
+import { internalServerErrorMiddleware } from "@/middlewares/internal-service-error.middleware";
+import { loggerMiddleware } from "@/middlewares/logger.middleware";
+import routes from "./routes";
 
 // Initialize express
 const app = express();
@@ -17,11 +16,7 @@ app.use(cors());
 
 // Routes
 const router = express.Router();
-router.post("/products", (req, res) => controllers.ProductController.create(req, res));
-router.get("/products", (req, res) => controllers.ProductController.getAll(req, res));
-router.get("/products/:id", (req, res) => controllers.ProductController.getById(req, res));
-router.put("/products/:id", (req, res) => controllers.ProductController.updateById(req, res));
-router.delete("/products/:id", (req, res) => controllers.ProductController.deleteById(req, res));
+routes(router);
 
 // Post middlewares
 router.use(notFoundMiddleware);

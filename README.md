@@ -8,13 +8,21 @@ Products API is a REST API written in Typescript where products can be created, 
 
 Note: _This API has been configured for `development` environment. To use in a `production` environment, further setup will be required._
 
-## Running the app
+## Installing the app
 
 **Requirements:**
 
 - [Node](https://nodejs.org/)
 - [Docker](https://www.docker.com/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
+
+```bash
+$ git clone git@github.com:lucasvmiguel/products-api.git
+cd products-api
+npm install
+```
+
+## Running the app
 
 1. Open a terminal and run the following command to start the persistence (database) required:
 
@@ -38,7 +46,27 @@ $ npm test
 
 ### Stress test
 
-TODO
+**Requirements:**
+
+- [Apache AB](https://httpd.apache.org/docs/2.4/programs/ab.html)
+
+1. Open a terminal and run the following command to start the persistence (database) required:
+
+```bash
+$ npm run persistence:up
+```
+
+2. In a new terminal, start the application with the following command:
+
+```bash
+$ npm run build && npm start
+```
+
+3. In another terminal, run the stress test with the following command
+
+```bash
+$ npm run test:stress
+```
 
 ## Configuration
 
@@ -75,15 +103,20 @@ The following pictures shows some of the details of how the system is designed a
 ### Folder/File structure
 
 - `/src`: Application source code
-- `/src/index.ts`: Application start file.
-- `/src/app.ts`: Where the API routes are defined.
-- `/src/utils`: Helper libraries to support the application.
-- `/src/product`: Product domain, where every code related to product should be placed. (Inspired by [DDD](https://en.wikipedia.org/wiki/Domain-driven_design))
 - `/test`: Integration tests that run with external apps. (eg: database)
+- `.env` and `/src/config.ts`: Configures the application
+- `/src/controllers`: Responsible for handling HTTP requests
+- `/src/middlewares`: Application middlewares (eg: logging, authentication, etc)
+- `/src/services`: Business logic layer for the application
+- `/src/utils`: Utilities and helpers to create the application.
+- `/src/routes.ts`: HTTP routes to access the API
+- `/src/app.ts`: Configures the application to start.
+- `/src/index.ts`: Application start file.
 - `/.github`: CI/CD from Github.
 - `docker-compose.yml`: Used to spin up the persistence layer in development and testing.
-- `.env`: configures project.
 - `package.json`: Project's executable tasks.
+
+Inspired by: https://blog.logrocket.com/organizing-express-js-project-structure-better-productivity/
 
 ### Stack
 
@@ -403,7 +436,6 @@ Steps:
 
 ## Roadmap
 
-- import with @
 - essential libraries in utils? eg: Controller
 - test e2e
 - test integration if service/database fails

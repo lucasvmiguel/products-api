@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import logger from "../../logger";
+import logger from "@/utils/logger";
 
 // Middleware that handles internal server errors
 export function internalServerErrorMiddleware(err: Error, req: Request, res: Response, next: NextFunction) {

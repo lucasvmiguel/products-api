@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 
-import { ProductRepository } from "./product/repository";
+import { ProductRepository } from "@/repositories/product.repository";
 
 // Dependencies
 const prisma = new PrismaClient();
