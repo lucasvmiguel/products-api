@@ -22,6 +22,7 @@ jobs:
         run: npm run test:unit
       - name: Test integration
         run: |
+          npm run migrate:dev
           npm run persistence:up &
           sleep 30
           npm run test:integration

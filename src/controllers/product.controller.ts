@@ -5,7 +5,7 @@ import type { Product } from "@prisma/client";
 
 import type { ProductService } from "@/services/product.service";
 import { NotFoundError } from "@/repositories/base.repository";
-import { validate } from "@/utils/validation";
+import { validate } from "@/utils/validation.util";
 import { Controller, StructuredResponse } from "@/controllers/base.controller";
 
 // ProductResponseBody is the response body for a product

@@ -3,7 +3,7 @@ import "module-alias/register";
 import dotenv from "dotenv";
 dotenv.config();
 
-import logger from "@/utils/logger";
+import logger from "@/utils/logger.util";
 import config from "@/config";
 import app from "@/app";
 
