@@ -12,7 +12,7 @@
     "migrate:dev": "npx prisma migrate dev && prisma generate",
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "jest --testPathPattern=test/unit",
-    "test:integration": "jest --runInBand --testPathPattern=test/integration",
+    "test:integration": "npm run migrate:dev && jest --runInBand --testPathPattern=test/integration",
     "test:stress": "./test/stress/run.sh"
   },
   "_moduleAliases": {
