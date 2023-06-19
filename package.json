@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/src/index.js",
   "scripts": {
-    "build": "npx tsc",
+    "build": "tsc",
     "start": "node dist/src/index.js",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/src/index.js\"",
     "persistence:up": "docker-compose up",
@@ -13,7 +13,10 @@
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "jest --testPathPattern=test/unit",
     "test:integration": "npm run migrate:dev && jest --runInBand --testPathPattern=test/integration",
-    "test:stress": "./test/stress/run.sh"
+    "test:stress": "./test/stress/run.sh",
+    "docker:build": "docker build -t github.com/lucasvmiguel/products-api:latest .",
+    "docker:run": "docker run --rm -p 3000:3000 github.com/lucasvmiguel/products-api:latest"
+    
   },
   "_moduleAliases": {
     "@": "dist/src"
