@@ -2,7 +2,7 @@ import request from "supertest";
 
 import { PrismaClient } from "@prisma/client";
 
-import app from "../../../src/app";
+import app from "@/app";
 
 const prisma = new PrismaClient();
 

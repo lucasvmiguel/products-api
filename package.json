@@ -10,7 +10,9 @@
     "persistence:up": "docker-compose up",
     "persistence:down": "docker-compose down",
     "migrate:dev": "npx prisma migrate dev && prisma generate",
-    "test": "jest --runInBand",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:unit": "jest --testPathPattern=test/unit",
+    "test:integration": "jest --runInBand --testPathPattern=test/integration",
     "test:stress": "./test/stress/run.sh"
   },
   "_moduleAliases": {

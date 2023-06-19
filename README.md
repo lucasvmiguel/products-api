@@ -41,7 +41,13 @@ $ npm run dev
 ### Unit test
 
 ```bash
-$ npm test
+$ npm run test:unit
+```
+
+### Integration test
+
+```bash
+$ npm run test:integration
 ```
 
 ### Stress test
@@ -103,7 +109,7 @@ The following pictures shows some of the details of how the system is designed a
 ### Folder/File structure
 
 - `/src`: Application source code
-- `/test`: Integration tests that run with external apps. (eg: database)
+- `/test`: All sort of tests. (eg: unit, integration, stress)
 - `.env` and `/src/config.ts`: Configures the application
 - `/src/controllers`: Responsible for handling HTTP requests
 - `/src/middlewares`: Application middlewares (eg: logging, authentication, etc)

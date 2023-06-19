@@ -1,7 +1,7 @@
 import request from "supertest";
 import express from "express";
 
-import { notFoundMiddleware } from "./not-found.middleware";
+import { notFoundMiddleware } from "@/middlewares/not-found.middleware";
 
 describe("notFoundMiddleware", () => {
   let app: express.Application;
