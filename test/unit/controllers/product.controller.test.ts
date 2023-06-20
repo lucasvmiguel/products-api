@@ -24,6 +24,7 @@ describe("ProductController", () => {
       deleteById: jest.fn(() => ({ data: product, error: null })),
       create: jest.fn(() => ({ data: product, error: null })),
       updateById: jest.fn(() => ({ data: product, error: null })),
+      getPaginated: jest.fn(() => ({ data: { products: [product, product2], nextCursor: product2.id }, error: null })),
     } as unknown as ProductService;
     serviceError = {
       getAll: jest.fn(() => ({ data: null, error: e })),
@@ -31,6 +32,7 @@ describe("ProductController", () => {
       deleteById: jest.fn(() => ({ data: null, error: e })),
       create: jest.fn(() => ({ data: null, error: e })),
       updateById: jest.fn(() => ({ data: null, error: e })),
+      getPaginated: jest.fn(() => ({ data: null, error: e })),
     } as unknown as ProductService;
 
     controller = new ProductController(service);
@@ -64,6 +66,46 @@ describe("ProductController", () => {
       expect(response.status).toHaveBeenLastCalledWith(500);
       expect(response.json).toHaveBeenCalledWith({
         message: "internal server error",
+      });
+    });
+  });
+
+  describe("getPaginated", () => {
+    test("successfully", async () => {
+      const request = { query: { limit: 2, cursor: 2 } } as unknown as Request;
+      await controller.getPaginated(request, response);
+
+      expect(response.status).toHaveBeenLastCalledWith(200);
+      expect(response.json).toHaveBeenCalledWith({
+        data: {
+          items: [
+            { ...product, deleted_at: undefined },
+            { ...product2, deleted_at: undefined },
+          ],
+          next_cursor: product2.id,
+        },
+        message: "success",
+      });
+    });
+
+    test("failed service", async () => {
+      const request = { query: { limit: 2, cursor: 2 } } as unknown as Request;
+      await controllerError.getPaginated(request, response);
+
+      expect(response.status).toHaveBeenLastCalledWith(500);
+      expect(response.json).toHaveBeenCalledWith({
+        message: "internal server error",
+      });
+    });
+
+    test("failed validation", async () => {
+      const request = { query: { limit: "invalid", cursor: 2 } } as unknown as Request;
+      await controllerError.getPaginated(request, response);
+
+      expect(response.status).toHaveBeenLastCalledWith(400);
+      expect(response.json).toHaveBeenCalledWith({
+        errors: ['limit must be a `number` type, but the final value was: `NaN` (cast from the value `"invalid"`).'],
+        message: "invalid request parameters",
       });
     });
   });

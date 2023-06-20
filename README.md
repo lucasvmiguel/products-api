@@ -36,6 +36,8 @@ npm run persistence:up
 npm run dev
 ```
 
+Note: _The `graphql` schema is not reloaded if there is any changes. You must restart the server to pick up the new changes._
+
 ## Testing
 
 ### Unit test
@@ -447,4 +449,4 @@ Steps:
 - `Improvement`: Using a secret management service like [Doppler](https://www.doppler.com/) or [Vault](https://www.vaultproject.io/)
 - test e2e
 - test integration if service/database fails
-- add graphql
+- add graphql & generate types from graphql schema & fix dates graphql

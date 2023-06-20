@@ -1,0 +1,20 @@
+type Product {
+  id: Int
+  name: String
+  stock_quantity: Int
+  code: String
+  createdAt: String
+  updatedAt: String
+}
+
+type Query {
+  # getPaginatedProducts: [Product]
+  getAllProducts: [Product]
+  getProduct(id: Int): Product
+}
+
+type Mutation {
+  updateProduct(id: Int, name: String, stockQuantity: Int): Product
+  createProduct(name: String, stockQuantity: Int): Product
+  deleteProduct(id: Int): Boolean
+}

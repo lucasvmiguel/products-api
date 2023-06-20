@@ -4,9 +4,9 @@
   "description": "",
   "main": "dist/src/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "npm run graphql:generate && tsc && npm run copy:graphql",
     "start": "node dist/src/index.js",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/src/index.js\"",
+    "dev": "npm run graphql:generate && npm run copy:graphql && concurrently \"npx tsc --watch\" \"nodemon -q dist/src/index.js\"",
     "persistence:up": "docker-compose up",
     "persistence:down": "docker-compose down",
     "migrate:dev": "npx prisma migrate dev && prisma generate",
@@ -15,7 +15,9 @@
     "test:integration": "npm run migrate:dev && jest --runInBand --testPathPattern=test/integration",
     "test:stress": "./test/stress/run.sh",
     "docker:build": "docker build -t github.com/lucasvmiguel/products-api:latest .",
-    "docker:run": "docker run --rm -p 3000:3000 github.com/lucasvmiguel/products-api:latest"
+    "docker:run": "docker run --rm -p 3000:3000 github.com/lucasvmiguel/products-api:latest",
+    "copy:graphql": "cp src/schema.graphql dist/src/schema.graphql",
+    "graphql:generate": "graphql-codegen --config codegen.yml"
   },
   "_moduleAliases": {
     "@": "dist/src"
@@ -23,10 +25,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@apollo/server": "^4.7.4",
     "@prisma/client": "^4.15.0",
+    "apollo-server-express": "^3.12.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "graphql": "^16.6.0",
     "module-alias": "^2.2.3",
     "uuid": "^9.0.0",
     "winston": "^3.9.0",
@@ -34,6 +39,9 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.0.2",
+    "@graphql-codegen/cli": "^4.0.1",
+    "@graphql-codegen/typescript": "^4.0.1",
+    "@graphql-codegen/typescript-resolvers": "^4.0.1",
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
     "@types/jest": "^29.5.2",
