@@ -10,7 +10,7 @@ import { validate } from "@/utils/validation.util";
 import { Controller, StructuredResponse } from "@/controllers/base.controller";
 
 // ProductResponseBody is the response body for a product
-type ProductResponseBody = {
+export type ProductResponseBody = {
   id: number;
   name: string;
   code: string;
@@ -54,17 +54,22 @@ export class ProductController extends Controller {
   // updates a product by id
   async updateById(req: Request, res: StructuredResponse<ProductResponseBody>) {
     const reqParamsSchema = yup.object({
-      name: yup.string(),
-      stock_quantity: yup.number().positive().integer(),
+      params: yup.object({
+        id: yup.number().required().positive().integer(),
+      }),
+      body: yup.object({
+        name: yup.string(),
+        stock_quantity: yup.number().positive().integer(),
+      }),
     });
 
-    const { result, error: errorReqParamsSchema } = await validate(reqParamsSchema, req.body);
+    const { result, error: errorReqParamsSchema } = await validate(reqParamsSchema, { body: req.body, params: req.params });
     if (errorReqParamsSchema || !result) {
       this.respondBadRequest(res, errorReqParamsSchema!);
       return;
     }
 
-    const { data, error: errorService } = await this.productService.updateById(Number(req.params.id), result);
+    const { data, error: errorService } = await this.productService.updateById(result.params.id, result.body);
     if (errorService instanceof NotFoundError) {
       this.respondNotFound(res, errorService!);
       return;
