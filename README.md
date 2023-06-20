@@ -87,7 +87,7 @@ This section describes what are the goals of the system and some of its design a
 The following list shows all user requirements implemented by the system.
 
 - As a user, I can fetch all products using a REST API.
-- As a user, I can fetch a paginated list of products using a REST API. #TODO
+- As a user, I can fetch a paginated list of products using a REST API.
 - As a user, I can fetch a product by its id using a REST API.
 - As a user, I can create a product using a REST API.
 - As a user, I can update some fields (`name` and/or `code`) of a product by its id using a REST API.
@@ -189,7 +189,7 @@ Status: 500
 </details>
 
 <details>
-<summary>Get products paginated #TODO</summary>
+<summary>Get products paginated</summary>
 
 Endpoint to get products paginated
 
@@ -442,8 +442,10 @@ Steps:
 
 ## Roadmap
 
-- essential libraries in utils? eg: Controller
+- `Improvement`: If it's needed to add more entities (eg: [Product](internal/product/entity/product.go)), we might need to centralize all entities in just one package. (Something like a `entity` package) That way, we would prevent cycle dependencies. (Check [this link](https://www.reddit.com/r/golang/comments/vcy5xq/ddd_file_structure_cyclic_dependencies/))
+- `Improvement`: API docs are being described on the Readme. However, [OpenAPI](https://swagger.io/specification/) might be a good improvement in the future.
+- `Improvement`: Using a secret management service like [Doppler](https://www.doppler.com/) or [Vault](https://www.vaultproject.io/)
 - test e2e
 - test integration if service/database fails
-- paginates products
 - add graphql
+- unit test controller

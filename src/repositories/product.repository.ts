@@ -34,6 +34,21 @@ export class ProductRepository extends Repository {
     }
   }
 
+  // returns products paginated
+  async getPaginated(limit: number, cursor?: number): Promise<{ data: Product[] | null; error: Error | null }> {
+    try {
+      cursor = cursor || 0;
+      const products = await this.prisma.product.findMany({
+        where: { deleted_at: null, id: { gt: cursor } },
+        take: limit,
+      });
+
+      return { data: products, error: null };
+    } catch (e) {
+      return { data: null, error: e as Error };
+    }
+  }
+
   // returns a product by id
   async getById(id: number): Promise<{ data: Product | null; error: Error | null }> {
     try {

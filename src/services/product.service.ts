@@ -33,6 +33,16 @@ export class ProductService extends Service {
     return { data, error };
   }
 
+  // returns products paginated
+  async getPaginated(limit?: number, cursor?: number): Promise<{ data: { products: Product[] | null; nextCursor: number | null }; error: Error | null }> {
+    limit = !limit || limit < 1 || limit > 100 ? 10 : limit;
+
+    const { data, error } = await this.productRepository.getPaginated(limit, cursor);
+    const nextCursor = data && data.length > 0 ? data[data.length - 1].id : null;
+
+    return { data: { products: data, nextCursor }, error };
+  }
+
   // returns a product by id
   async getById(id: number): Promise<{ data: Product | null; error: Error | null }> {
     const { data, error } = await this.productRepository.getById(id);

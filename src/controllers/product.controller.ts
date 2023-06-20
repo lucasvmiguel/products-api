@@ -4,6 +4,7 @@ import * as yup from "yup";
 import type { Product } from "@prisma/client";
 
 import type { ProductService } from "@/services/product.service";
+import type { PaginationResult } from "@/utils/pagination.util";
 import { NotFoundError } from "@/repositories/base.repository";
 import { validate } from "@/utils/validation.util";
 import { Controller, StructuredResponse } from "@/controllers/base.controller";
@@ -89,6 +90,29 @@ export class ProductController extends Controller {
       res,
       data.map((product) => this.mapProductToResponse(product))
     );
+  }
+
+  // gets products paginated
+  async getPaginated(req: Request, res: StructuredResponse<PaginationResult<ProductResponseBody>>) {
+    const reqParamsSchema = yup.object({
+      limit: yup.number().positive().integer(),
+      cursor: yup.number().positive().integer(),
+    });
+    const { result, error: errorReqParamsSchema } = await validate(reqParamsSchema, req.query);
+    if (errorReqParamsSchema || !result) {
+      this.respondBadRequest(res, errorReqParamsSchema!);
+      return;
+    }
+
+    const { data, error } = await this.productService.getPaginated(result.limit, result.cursor);
+    if (error || !data) {
+      this.respondInternalServerError(res, error!);
+      return;
+    }
+
+    const items = data.products?.map((product) => this.mapProductToResponse(product)) || [];
+
+    this.respondOkResponse(res, { items, next_cursor: data.nextCursor });
   }
 
   // gets product by id

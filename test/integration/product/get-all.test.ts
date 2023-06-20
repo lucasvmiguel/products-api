@@ -5,7 +5,7 @@ import { PrismaClient } from "@prisma/client";
 import app from "@/app";
 
 const prisma = new PrismaClient();
-const ENDPOINT = "/api/v1/products";
+const ENDPOINT = "/api/v1/products/all";
 
 describe(`[GET] ${ENDPOINT}`, () => {
   beforeEach(async () => {

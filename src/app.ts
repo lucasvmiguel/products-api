@@ -10,6 +10,7 @@ import routes from "./routes";
 const app = express();
 
 // Pre middlewares
+app.use(loggerMiddleware);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
@@ -21,7 +22,6 @@ routes(router);
 // Post middlewares
 router.use(notFoundMiddleware);
 router.use(internalServerErrorMiddleware);
-router.use(loggerMiddleware);
 
 app.use("/api/v1", router);
 

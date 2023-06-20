@@ -16,7 +16,6 @@
     "test:stress": "./test/stress/run.sh",
     "docker:build": "docker build -t github.com/lucasvmiguel/products-api:latest .",
     "docker:run": "docker run --rm -p 3000:3000 github.com/lucasvmiguel/products-api:latest"
-    
   },
   "_moduleAliases": {
     "@": "dist/src"
