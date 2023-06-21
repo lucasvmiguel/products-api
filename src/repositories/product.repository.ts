@@ -60,7 +60,7 @@ export class ProductRepository extends Repository {
     try {
       const product = await this.prisma.product.findFirst({ where: { id, deleted_at: null } });
       if (!product) {
-        return { data: null, error: new NotFoundError("not found") };
+        return { data: null, error: new NotFoundError() };
       }
 
       return { data: product, error: null };
@@ -74,7 +74,7 @@ export class ProductRepository extends Repository {
     try {
       const product = await this.prisma.product.findFirst({ where: { id, deleted_at: null } });
       if (!product) {
-        return { data: null, error: new NotFoundError("not found") };
+        return { data: null, error: new NotFoundError() };
       }
 
       const updated = await this.prisma.product.update({ where: { id }, data });
@@ -88,9 +88,9 @@ export class ProductRepository extends Repository {
   // deletes a product by id
   async deleteById(id: number): Promise<SingleDataWithError> {
     try {
-      const product = await this.prisma.product.findUnique({ where: { id } });
+      const product = await this.prisma.product.findFirst({ where: { id, deleted_at: null } });
       if (!product) {
-        return { data: null, error: new NotFoundError("not found") };
+        return { data: null, error: new NotFoundError() };
       }
 
       const deleted = await this.prisma.product.update({ where: { id }, data: { deleted_at: new Date() } });

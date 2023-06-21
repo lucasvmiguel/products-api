@@ -11,17 +11,45 @@ export abstract class Resolver {
     this.logger = logger;
   }
 
+  // respondBadRequest is used to respond bad request error
+  resolveBadRequest(error: Error) {
+    this.logger.error(error);
+
+    throw new BadRequestError();
+  }
+
   // resolveNotFound is used to resolve not found error
   resolveNotFound(error: Error) {
     this.logger.error(error);
 
-    throw new ApolloError("not found", "NOT_FOUND");
+    throw new NotFoundError();
   }
 
   // resolveInternalServerError is used to resolve internal server error
   resolveInternalServerError(error: Error) {
     this.logger.error(error);
 
-    throw new ApolloError("internal server error", "INTERNAL_SERVER_ERROR");
+    throw new InternalServerError();
+  }
+}
+
+// NotFoundError is used to respond not found error
+export class NotFoundError extends ApolloError {
+  constructor() {
+    super("not found", "NOT_FOUND");
+  }
+}
+
+// BadRequestError is used to respond bad request error
+export class BadRequestError extends ApolloError {
+  constructor() {
+    super("bad request", "BAD_REQUEST");
+  }
+}
+
+// InternalServerError is used to respond internal server error
+export class InternalServerError extends ApolloError {
+  constructor() {
+    super("internal server error", "INTERNAL_SERVER_ERROR");
   }
 }

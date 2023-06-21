@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 
-import { ProductController, ProductResponseBody } from "@/controllers/product.controller";
+import { ProductController } from "@/controllers/product.controller";
 import { ProductService } from "@/services/product.service";
 import { productFactory } from "../factories/product.factory";
-import { StructuredResponse } from "@/controllers/base.controller";
+import { NotFoundError } from "@/repositories/base.repository";
 
 describe("ProductController", () => {
   const e = new Error("error");
@@ -142,9 +142,21 @@ describe("ProductController", () => {
         message: "invalid request parameters",
       });
     });
+
+    test("not found", async () => {
+      const service = {
+        getById: jest.fn(() => ({ data: product, error: new NotFoundError() })),
+      } as unknown as ProductService;
+
+      const controller = new ProductController(service);
+      const request = { params: { id: product.id } } as unknown as Request;
+      await controller.getById(request, response);
+
+      expect(response.status).toHaveBeenLastCalledWith(404);
+    });
   });
 
-  describe("deletedById", () => {
+  describe("deleteById", () => {
     test("successfully", async () => {
       const request = { params: { id: product.id } } as unknown as Request;
       await controller.deleteById(request, response);
@@ -172,6 +184,18 @@ describe("ProductController", () => {
         errors: ['id must be a `number` type, but the final value was: `NaN` (cast from the value `"invalid"`).'],
         message: "invalid request parameters",
       });
+    });
+
+    test("not found", async () => {
+      const service = {
+        deleteById: jest.fn(() => ({ data: product, error: new NotFoundError() })),
+      } as unknown as ProductService;
+
+      const controller = new ProductController(service);
+      const request = { params: { id: product.id } } as unknown as Request;
+      await controller.deleteById(request, response);
+
+      expect(response.status).toHaveBeenLastCalledWith(404);
     });
   });
 
@@ -267,6 +291,18 @@ describe("ProductController", () => {
         errors: ['body.stock_quantity must be a `number` type, but the final value was: `NaN` (cast from the value `"invalid"`).'],
         message: "invalid request parameters",
       });
+    });
+
+    test("not found", async () => {
+      const service = {
+        updateById: jest.fn(() => ({ data: product, error: new NotFoundError() })),
+      } as unknown as ProductService;
+
+      const controller = new ProductController(service);
+      const request = { params: { id: product.id } } as unknown as Request;
+      await controller.updateById(request, response);
+
+      expect(response.status).toHaveBeenLastCalledWith(404);
     });
   });
 });

@@ -2,6 +2,7 @@ import type { PrismaClient } from "@prisma/client";
 
 import { ProductRepository } from "@/repositories/product.repository";
 import { productFactory } from "../factories/product.factory";
+import { NotFoundError } from "@/repositories/base.repository";
 
 describe("ProductRepository", () => {
   const e = new Error("error");
@@ -20,7 +21,6 @@ describe("ProductRepository", () => {
         create: jest.fn(() => product),
         findMany: jest.fn(() => [product, product2]),
         findFirst: jest.fn(() => product),
-        findUnique: jest.fn(() => product),
         update: jest.fn(() => product),
       },
     } as unknown as PrismaClient;
@@ -33,9 +33,6 @@ describe("ProductRepository", () => {
           throw e;
         }),
         findFirst: jest.fn(() => {
-          throw e;
-        }),
-        findUnique: jest.fn(() => {
           throw e;
         }),
         update: jest.fn(() => {
@@ -145,6 +142,21 @@ describe("ProductRepository", () => {
       expect(error).toBe(e);
       expect(prismaError.product.findFirst).toHaveBeenLastCalledWith({ where: { id: product.id, deleted_at: null } });
     });
+
+    test("not found", async () => {
+      const prisma = {
+        product: {
+          findFirst: jest.fn(() => null),
+        },
+      } as unknown as PrismaClient;
+
+      const repository = new ProductRepository(prisma);
+      const { data, error } = await repository.getById(product.id);
+
+      expect(data).toBe(null);
+      expect(error).toBeInstanceOf(NotFoundError);
+      expect(prisma.product.findFirst).toHaveBeenLastCalledWith({ where: { id: product.id, deleted_at: null } });
+    });
   });
 
   describe("deleteById", () => {
@@ -153,7 +165,7 @@ describe("ProductRepository", () => {
 
       expect(data).toMatchObject(product);
       expect(error).toBe(null);
-      expect(prisma.product.findUnique).toHaveBeenLastCalledWith({ where: { id: product.id } });
+      expect(prisma.product.findFirst).toHaveBeenLastCalledWith({ where: { id: product.id, deleted_at: null } });
       expect(prisma.product.update).toHaveBeenLastCalledWith({ where: { id: product.id }, data: { deleted_at: expect.any(Date) } });
     });
 
@@ -162,14 +174,14 @@ describe("ProductRepository", () => {
 
       expect(data).toBe(null);
       expect(error).toBe(e);
-      expect(prismaError.product.findUnique).toHaveBeenLastCalledWith({ where: { id: product.id } });
+      expect(prismaError.product.findFirst).toHaveBeenLastCalledWith({ where: { id: product.id, deleted_at: null } });
       expect(prismaError.product.update).toHaveBeenCalledTimes(0);
     });
 
     test("failed to update", async () => {
       const prisma = {
         product: {
-          findUnique: jest.fn(() => product),
+          findFirst: jest.fn(() => product),
           update: jest.fn(() => {
             throw e;
           }),
@@ -181,13 +193,30 @@ describe("ProductRepository", () => {
 
       expect(data).toBe(null);
       expect(error).toBe(e);
-      expect(prisma.product.findUnique).toHaveBeenLastCalledWith({ where: { id: product.id } });
+      expect(prisma.product.findFirst).toHaveBeenLastCalledWith({ where: { id: product.id, deleted_at: null } });
       expect(prisma.product.update).toHaveBeenLastCalledWith({ where: { id: product.id }, data: { deleted_at: expect.any(Date) } });
+    });
+
+    test("not found", async () => {
+      const prisma = {
+        product: {
+          findFirst: jest.fn(() => null),
+          update: jest.fn(() => null),
+        },
+      } as unknown as PrismaClient;
+
+      const repository = new ProductRepository(prisma);
+      const { data, error } = await repository.deleteById(product.id);
+
+      expect(data).toBe(null);
+      expect(error).toBeInstanceOf(NotFoundError);
+      expect(prisma.product.findFirst).toHaveBeenLastCalledWith({ where: { id: product.id, deleted_at: null } });
+      expect(prisma.product.update).toHaveBeenCalledTimes(0);
     });
   });
 
   describe("updatedById", () => {
-    const dataToUpdate = { name: "new name" };
+    const dataToUpdate = { name: product2.name };
 
     test("successfully", async () => {
       const { data, error } = await repository.updateById(product.id, dataToUpdate);
@@ -224,6 +253,23 @@ describe("ProductRepository", () => {
       expect(error).toBe(e);
       expect(prisma.product.findFirst).toHaveBeenLastCalledWith({ where: { id: product.id, deleted_at: null } });
       expect(prisma.product.update).toHaveBeenLastCalledWith({ where: { id: product.id }, data: dataToUpdate });
+    });
+
+    test("not found", async () => {
+      const prisma = {
+        product: {
+          findFirst: jest.fn(() => null),
+          update: jest.fn(() => null),
+        },
+      } as unknown as PrismaClient;
+
+      const repository = new ProductRepository(prisma);
+      const { data, error } = await repository.updateById(product.id, dataToUpdate);
+
+      expect(data).toBe(null);
+      expect(error).toBeInstanceOf(NotFoundError);
+      expect(prisma.product.findFirst).toHaveBeenLastCalledWith({ where: { id: product.id, deleted_at: null } });
+      expect(prisma.product.update).toHaveBeenCalledTimes(0);
     });
   });
 });
