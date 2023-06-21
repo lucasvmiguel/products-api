@@ -116,13 +116,14 @@ The following pictures shows some of the details of how the system is designed a
 - `/src/controllers`: Responsible for handling HTTP requests
 - `/src/middlewares`: Application middlewares (eg: logging, authentication, etc)
 - `/src/services`: Business logic layer for the application
-- `/src/utils`: Utilities and helpers to create the application.
+- `/src/resolvers`: Responsible for handling GraphQL queries
+- `/src/utils`: Utilities and helpers to create the application
 - `/src/routes.ts`: HTTP routes to access the API
-- `/src/app.ts`: Configures the application to start.
-- `/src/index.ts`: Application start file.
-- `/.github`: CI/CD from Github.
-- `docker-compose.yml`: Used to spin up the persistence layer in development and testing.
-- `package.json`: Project's executable tasks.
+- `/src/app.ts`: Configures the application to start
+- `/src/index.ts`: Application start file
+- `/.github`: CI/CD from Github
+- `docker-compose.yml`: Used to spin up the persistence layer in development and testing
+- `package.json`: Project's executable tasks
 
 Inspired by: https://blog.logrocket.com/organizing-express-js-project-structure-better-productivity/
 
@@ -424,7 +425,7 @@ Status: 500
 
 ## GraphQL
 
-The API also count with a GraphQL server that can be accessed by `{HOST}/graphql`. However, at the moment, only `getProduct` is implemented.
+The API also count with a GraphQL server that can be accessed on the endpoint `/graphql`. However, at the moment, only `getProduct` resolver is implemented.
 
 ## Configuration
 
@@ -448,7 +449,6 @@ Steps:
 
 ## Roadmap
 
-- `Improvement`: If it's needed to add more entities (eg: [Product](internal/product/entity/product.go)), we might need to centralize all entities in just one package. (Something like a `entity` package) That way, we would prevent cycle dependencies. (Check [this link](https://www.reddit.com/r/golang/comments/vcy5xq/ddd_file_structure_cyclic_dependencies/))
 - `Improvement`: API docs are being described on the Readme. However, [OpenAPI](https://swagger.io/specification/) might be a good improvement in the future.
 - `Improvement`: Using a secret management service like [Doppler](https://www.doppler.com/) or [Vault](https://www.vaultproject.io/)
 - `Chore` add all resolvers from product CRUD to GraphQL's API.
