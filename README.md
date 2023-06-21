@@ -451,5 +451,6 @@ Steps:
 - `Improvement`: If it's needed to add more entities (eg: [Product](internal/product/entity/product.go)), we might need to centralize all entities in just one package. (Something like a `entity` package) That way, we would prevent cycle dependencies. (Check [this link](https://www.reddit.com/r/golang/comments/vcy5xq/ddd_file_structure_cyclic_dependencies/))
 - `Improvement`: API docs are being described on the Readme. However, [OpenAPI](https://swagger.io/specification/) might be a good improvement in the future.
 - `Improvement`: Using a secret management service like [Doppler](https://www.doppler.com/) or [Vault](https://www.vaultproject.io/)
-- `Chore` add all resolvers from product CRUD
-- `Fix`: Date is not returning correctly from the resolvers
+- `Chore` add all resolvers from product CRUDto GraphQL's API.
+- `Fix`: Date is not returning correctly from the resolvers.
+- `Fix`: `npm run docker:run` has an issue when copying the prisma client.
